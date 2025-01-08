@@ -32,8 +32,6 @@ public class SocialMediaController {
 
         app.post("register", accoutController::registerAccount);
         app.post("/login", accoutController::login);
-        app.get("/accounts/{account_id}/messages", messageController::findAccountMessages);
-        
         //
         app.get("/messages", messageController::findAll);
         app.get("/messages/{message_id}", messageController::findById);
@@ -41,6 +39,7 @@ public class SocialMediaController {
         app.put("/messages/{message_id}", messageController::updateMessage);
         app.post("/messages", messageController::save);
         app.delete("/messages/{id}", messageController::delete);
+        app.get("/accounts/{account_id}/messages", messageController::findAccountMessages);
         
         return app;
     }

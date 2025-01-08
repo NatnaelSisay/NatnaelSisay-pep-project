@@ -60,6 +60,8 @@ public class AccountDAO {
     }
 
     /**
+     * Find a user exist with the given username and password inside the database
+     * 
      * @param account contains username and password
      * @return Optional with the crosponding account information or empty optional
      */
@@ -91,6 +93,12 @@ public class AccountDAO {
         return Optional.empty();
     }
 
+    /**
+     * Find an account by account_id
+     * 
+     * @param account_id
+     * @return
+     */
     public Optional<Account> findById(int account_id){
         Connection connection = ConnectionUtil.getConnection();
 

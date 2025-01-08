@@ -34,6 +34,12 @@ public class MessageDAO {
         return Optional.empty();
     }
 
+    /**
+     * Find a message by message_id and return optional
+     * @param message_id
+     * @return Optional with message if message with id exist else
+     *  return empty Optional
+     */
     public Optional<Message> findById(int message_id){
         Connection connection = ConnectionUtil.getConnection();
 
@@ -85,25 +91,13 @@ public class MessageDAO {
         return Optional.of(new ArrayList<>());
     }
 
-    public Optional<List<Message>> template(int user_id){
-        Connection connection = ConnectionUtil.getConnection();
-        try{
-            String query = "SELECT * FROM message where posted_by=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, user_id);
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                    // do something
-                    System.out.println("empty");
-            }
-        } catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return Optional.empty();
-    }
-
+    /**
+     * Save message to database.
+     * The content of the message must have all the required fields
+     * 
+     * @param message
+     * @return saved message with the unique id
+     */
     public Message save(Message message){
         Message result = message;
 
@@ -156,24 +150,13 @@ public class MessageDAO {
         return 0; // no row affected
     }
 
-    private Optional<List<Message>> extractMessagesFromResultSet(ResultSet rs) throws SQLException{
-
-        List<Message> messages = new ArrayList<>();
-        while (rs.next()) {
-            Message message = new Message(
-                rs.getInt("message_id"),
-                rs.getInt("posted_by"),
-                rs.getString("message_text"),
-                rs.getLong("time_posted_epoch")
-            );
-
-            messages.add(message);
-        }
-
-        return Optional.of(messages);
-    }
-
-
+    /**
+     * Update content of a message in database
+     * 
+     * @param message_id
+     * @param message
+     * @return 0 if update was not successfull and 1 if update was successfull.
+     */
     public int update(int message_id, Message message){
         Connection connection = ConnectionUtil.getConnection();
 
@@ -194,5 +177,27 @@ public class MessageDAO {
         return 0;
     }
 
+    /**
+     * Helper method to convert ResultSet set to List
+     * 
+     * @param rs a result set from database query
+     * @return the extraction of result set to a List
+     */
+    private Optional<List<Message>> extractMessagesFromResultSet(ResultSet rs) throws SQLException{
+
+        List<Message> messages = new ArrayList<>();
+        while (rs.next()) {
+            Message message = new Message(
+                rs.getInt("message_id"),
+                rs.getInt("posted_by"),
+                rs.getString("message_text"),
+                rs.getLong("time_posted_epoch")
+            );
+
+            messages.add(message);
+        }
+
+        return Optional.of(messages);
+    }
 
 }

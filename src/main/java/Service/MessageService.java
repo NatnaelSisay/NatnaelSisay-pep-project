@@ -1,6 +1,5 @@
 package Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +11,9 @@ import Model.Message;
 import Util.GeneralUtil;
 import Util.ValidationUtil;
 
+/**
+ * Provide methods for Message class to interact with the database and perform buisness logic
+ */
 public class MessageService {
     MessageDAO messageDAO;
     AccountService accountService;
@@ -34,12 +36,6 @@ public class MessageService {
         return result == null ? Optional.empty() : Optional.of(result);
     }
 
-    /**
-     * Delete message from database given message_id
-     * @param message_id
-     * @return if the message with message_id exist retrive and delete the message, else
-     *  return empty Optional
-     */
     public Optional<Message> delete(int message_id){
         Optional<Message> message = this.messageDAO.findById(message_id);
         

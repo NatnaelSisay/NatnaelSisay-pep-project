@@ -4,13 +4,11 @@ import io.javalin.http.Context;
 
 import io.javalin.http.HttpStatus;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import Model.Account;
-import Model.Message;
 import Service.AccountService;
 import Util.GeneralUtil;
 
@@ -20,6 +18,7 @@ import Util.GeneralUtil;
  * 
  * This class contains methods to
  * - register a new account
+ * - authenticate a user account
  */
 public class AccoutController {
 
@@ -75,11 +74,11 @@ public class AccoutController {
         Optional<Account> extractedAccount = this.accountService.findAccountByUserNameAndPassword(account);
 
         if(extractedAccount.isEmpty()){
-            context.status(401);
+            context.status(HttpStatus.UNAUTHORIZED);
             return;
         }
 
-        context.status(200).result(GeneralUtil.convertAccountObjToJson(extractedAccount.get()));
+        context.status(HttpStatus.OK).result(GeneralUtil.convertAccountObjToJson(extractedAccount.get()));
     }
 
 }

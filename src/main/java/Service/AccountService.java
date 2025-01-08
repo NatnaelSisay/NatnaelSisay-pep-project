@@ -1,11 +1,9 @@
 package Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import DAO.AccountDAO;
 import Model.Account;
-import Model.Message;
 import Util.ValidationUtil;
 import io.javalin.http.HttpStatus;
 
