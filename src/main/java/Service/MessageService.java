@@ -51,4 +51,8 @@ public class MessageService {
     public Optional<List<Message>> findAccountMessages(int account_id){
         return this.messageDAO.findByPostedById(account_id);
     }
+
+    public Optional<List<Message>> findAll(){
+        return this.messageDAO.findAll();
+    }
 }

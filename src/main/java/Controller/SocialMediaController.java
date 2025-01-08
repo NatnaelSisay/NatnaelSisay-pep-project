@@ -35,6 +35,7 @@ public class SocialMediaController {
         app.get("/accounts/{account_id}/messages", messageController::findAccountMessages);
         
         //
+        app.get("/messages", messageController::findAll);
         app.post("/messages", messageController::save);
         app.delete("/messages/{id}", messageController::delete);
         

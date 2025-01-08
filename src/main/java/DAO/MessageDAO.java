@@ -13,6 +13,28 @@ import Model.Message;
 import Util.ConnectionUtil;
 
 public class MessageDAO {
+
+    /**
+     * Retrive all messages in the database
+     * @return Optional containing all messages in the database
+     */
+    public Optional<List<Message>> findAll(){
+        Connection connection = ConnectionUtil.getConnection();
+        try{
+            String query = "SELECT * FROM message";
+            Statement statement = connection.createStatement();
+
+            ResultSet rs = statement.executeQuery(query);
+
+            return extractMessagesFromResultSet(rs);
+
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+
     public Optional<Message> findById(int message_id){
         Connection connection = ConnectionUtil.getConnection();
 
@@ -55,19 +77,7 @@ public class MessageDAO {
 
             ResultSet rs = preparedStatement.executeQuery();
             
-            List<Message> messages = new ArrayList<>();
-            while (rs.next()) {
-                Message message = new Message(
-                    rs.getInt("message_id"),
-                    rs.getInt("posted_by"),
-                    rs.getString("message_text"),
-                    rs.getLong("time_posted_epoch")
-                );
-
-                messages.add(message);
-            }
-
-            return Optional.of(messages);
+            return extractMessagesFromResultSet(rs);
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
@@ -148,4 +158,21 @@ public class MessageDAO {
         return 0; // no row affected
     }
 
+
+    private Optional<List<Message>> extractMessagesFromResultSet(ResultSet rs) throws SQLException{
+
+        List<Message> messages = new ArrayList<>();
+        while (rs.next()) {
+            Message message = new Message(
+                rs.getInt("message_id"),
+                rs.getInt("posted_by"),
+                rs.getString("message_text"),
+                rs.getLong("time_posted_epoch")
+            );
+
+            messages.add(message);
+        }
+
+        return Optional.of(messages);
+    }
 }

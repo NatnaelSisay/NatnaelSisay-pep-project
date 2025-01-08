@@ -17,7 +17,7 @@ public class MessageController {
     public MessageController(MessageService service){
         this.messageService = service;
     }
-
+    
     public void save(Context context) throws JsonProcessingException{
         Message message = GeneralUtil.extractMessageFromBody(context.body());
         if(message == null){
@@ -49,13 +49,27 @@ public class MessageController {
 
         ctx.status(200).result(GeneralUtil.convertToJson(deletedMessage.get()));
     }
-
+    
+    /**
+     * Find all messages from specific account_id
+     * @param ctx
+     * @throws JsonProcessingException
+     */
     public void findAccountMessages(Context ctx) throws JsonProcessingException{
         int account_id = Integer.valueOf(ctx.pathParam("account_id"));
         System.out.println("account_id: " + account_id);
         Optional<List<Message>> messages = messageService.findAccountMessages(account_id);
 
-        
+        ctx.status(200).result(GeneralUtil.convertToJson(messages.get()));
+    }
+
+    /**
+     * Find all messages in the database
+     * @param ctx
+     * @throws JsonProcessingException
+     */
+    public void findAll(Context ctx) throws JsonProcessingException{
+        Optional<List<Message>> messages = this.messageService.findAll();
         ctx.status(200).result(GeneralUtil.convertToJson(messages.get()));
     }
 }
