@@ -7,4 +7,6 @@ public class ValidationUtil {
         // non empty string and password length greater than or equal to 4
         return !(account.username.isEmpty() || account.password.length() < 4);
     }
+
+    
 }

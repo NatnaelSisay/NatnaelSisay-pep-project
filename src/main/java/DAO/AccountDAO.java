@@ -89,4 +89,30 @@ public class AccountDAO {
 
         return Optional.empty();
     }
+
+    public Optional<Account> findById(int account_id){
+        Connection connection = ConnectionUtil.getConnection();
+
+        try{
+            String query = "SELECT * FROM account WHERE account_id=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, account_id);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()){
+                Account result =  new Account();
+                result.setAccount_id(rs.getInt("account_id"));
+                result.setUsername(rs.getString("username"));
+                // avoid sending password
+
+                return Optional.of(result);
+            }
+
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return Optional.empty();
+    }
 }

@@ -1,7 +1,9 @@
 package Controller;
 
 import DAO.AccountDAO;
+import DAO.MessageDAO;
 import Service.AccountService;
+import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -21,26 +23,21 @@ public class SocialMediaController {
     AccountService accountService = new AccountService(accountDAO);
     AccoutController accoutController = new AccoutController(accountService);
 
+    // 
+    MessageDAO messageDAO = new MessageDAO();
+    MessageService messageService = new MessageService(messageDAO, accountService);
+    MessageController messageController = new MessageController(messageService);
+
+
 
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.get("example-endpoint", this::exampleHandler);
 
-        // /register
         app.post("register", accoutController::registerAccount);
         app.post("/login", accoutController::login);
+        app.post("/messages", messageController::save);
         
         return app;
     }
-
-    /**
-     * This is an example handler for an example endpoint.
-     * @param context The Javalin Context object manages information about both the HTTP request and response.
-     */
-    private void exampleHandler(Context context) {
-        context.json("sample text");
-    }
-
-    
 
 }

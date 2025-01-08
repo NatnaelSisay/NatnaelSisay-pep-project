@@ -65,4 +65,8 @@ public class AccountService {
     public Optional<Account> findAccountByUserNameAndPassword(Account account){
         return this.accountDAO.findAccountByUserNameAndPassword(account);
     }
+
+    public Optional<Account> findById(int account_id){
+        return this.accountDAO.findById(account_id);
+    }
 }
