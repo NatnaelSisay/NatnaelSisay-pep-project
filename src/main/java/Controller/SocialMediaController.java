@@ -1,5 +1,7 @@
 package Controller;
 
+import DAO.AccountDAO;
+import Service.AccountService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -14,9 +16,18 @@ public class SocialMediaController {
      * suite must receive a Javalin object from this method.
      * @return a Javalin app object which defines the behavior of the Javalin controller.
      */
+
+    AccountDAO accountDAO = new AccountDAO();
+    AccountService accountService = new AccountService(accountDAO);
+    AccoutController accoutController = new AccoutController(accountService);
+
+
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
+
+        // /register
+        app.post("register", accoutController::registerAccount);
 
         return app;
     }
@@ -29,5 +40,6 @@ public class SocialMediaController {
         context.json("sample text");
     }
 
+    
 
 }
