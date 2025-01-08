@@ -72,4 +72,15 @@ public class MessageController {
         Optional<List<Message>> messages = this.messageService.findAll();
         ctx.status(200).result(GeneralUtil.convertToJson(messages.get()));
     }
+
+    public void findById(Context ctx) throws JsonProcessingException{
+        int message_id = Integer.valueOf(ctx.pathParam("message_id"));
+        Optional<Message> message = this.messageService.findById(message_id);
+
+        if(message.isPresent()){
+            ctx.result(GeneralUtil.convertToJson(message.get()));
+        }
+
+        ctx.status(200);
+    }
 }

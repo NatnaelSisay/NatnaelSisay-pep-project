@@ -55,4 +55,8 @@ public class MessageService {
     public Optional<List<Message>> findAll(){
         return this.messageDAO.findAll();
     }
+
+    public Optional<Message> findById(int message_id){
+        return this.messageDAO.findById(message_id);
+    }
 }
