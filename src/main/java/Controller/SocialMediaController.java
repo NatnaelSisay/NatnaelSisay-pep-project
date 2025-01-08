@@ -22,20 +22,21 @@ public class SocialMediaController {
     AccountDAO accountDAO = new AccountDAO();
     AccountService accountService = new AccountService(accountDAO);
     AccoutController accoutController = new AccoutController(accountService);
-
     // 
     MessageDAO messageDAO = new MessageDAO();
     MessageService messageService = new MessageService(messageDAO, accountService);
     MessageController messageController = new MessageController(messageService);
-
-
 
     public Javalin startAPI() {
         Javalin app = Javalin.create();
 
         app.post("register", accoutController::registerAccount);
         app.post("/login", accoutController::login);
+        app.get("/accounts/{account_id}/messages", messageController::findAccountMessages);
+        
+        //
         app.post("/messages", messageController::save);
+        app.delete("/messages/{id}", messageController::delete);
         
         return app;
     }

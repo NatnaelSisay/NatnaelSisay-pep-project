@@ -1,5 +1,6 @@
 package Controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,5 +32,30 @@ public class MessageController {
         }
 
         context.status(200).result(GeneralUtil.convertToJson(savedMessage.get()));
+    }
+
+    /**
+     * Delete message from database
+     * @param ctx Javlin context with path parameter of "id"
+     */
+    public void delete(Context ctx) throws JsonProcessingException{
+        String message_id = ctx.pathParam("id");
+        Optional<Message> deletedMessage = this.messageService.delete(Integer.valueOf(message_id));
+        
+        if(deletedMessage.isEmpty()){
+            ctx.status(200);
+            return;
+        }
+
+        ctx.status(200).result(GeneralUtil.convertToJson(deletedMessage.get()));
+    }
+
+    public void findAccountMessages(Context ctx) throws JsonProcessingException{
+        int account_id = Integer.valueOf(ctx.pathParam("account_id"));
+        System.out.println("account_id: " + account_id);
+        Optional<List<Message>> messages = messageService.findAccountMessages(account_id);
+
+        
+        ctx.status(200).result(GeneralUtil.convertToJson(messages.get()));
     }
 }

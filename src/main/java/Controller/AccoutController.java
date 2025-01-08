@@ -4,11 +4,13 @@ import io.javalin.http.Context;
 
 import io.javalin.http.HttpStatus;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import Model.Account;
+import Model.Message;
 import Service.AccountService;
 import Util.GeneralUtil;
 
@@ -33,6 +35,7 @@ public class AccoutController {
      * @param context Javlin context containing account information
      * @throws JsonProcessingException will be thrown if there is issue with the request body
      */
+
     public void registerAccount(Context context) throws JsonProcessingException{
 
         Account account = GeneralUtil.extractAccountFromBody(context.body());
@@ -60,6 +63,7 @@ public class AccoutController {
      * @param context Javlin context containing account information
      * @throws JsonProcessingException will be thrown if there is issue with the request body
      */
+
     public void login(Context context) throws JsonProcessingException{
         Account account = GeneralUtil.extractAccountFromBody(context.body());
         
@@ -77,4 +81,5 @@ public class AccoutController {
 
         context.status(200).result(GeneralUtil.convertAccountObjToJson(extractedAccount.get()));
     }
+
 }

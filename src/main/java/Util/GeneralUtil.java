@@ -1,5 +1,7 @@
 package Util;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -33,6 +35,10 @@ public class GeneralUtil {
 
     public static String convertToJson(Message message) throws JsonProcessingException{
         return objectMapper.writeValueAsString(message);
+    }
+
+    public static String convertToJson(List<Message> messages) throws JsonProcessingException{
+        return objectMapper.writeValueAsString(messages);
     }
     
     public static boolean isMessageValid(Message message){
