@@ -57,4 +57,36 @@ public class AccountDAO {
 
         return false;
     }
+
+    /**
+     * @param account contains username and password
+     * @return Optional with the crosponding account information or empty optional
+     */
+    public Optional<Account> findAccountByUserNameAndPassword(Account account){
+        Connection connection = ConnectionUtil.getConnection();
+
+        try{
+            String queryString = "SELECT * FROM account WHERE username=? AND password=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(queryString);
+
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()){
+                Account resulAccount = new Account(
+                    rs.getInt("account_id"),
+                    rs.getString("username"),
+                    rs.getString("password")
+                );
+
+                return Optional.of(resulAccount);
+            }
+        } catch(SQLException e){
+            System.out.println(e);
+        }
+
+        return Optional.empty();
+    }
 }

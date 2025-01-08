@@ -28,7 +28,8 @@ public class SocialMediaController {
 
         // /register
         app.post("register", accoutController::registerAccount);
-
+        app.post("/login", accoutController::login);
+        
         return app;
     }
 

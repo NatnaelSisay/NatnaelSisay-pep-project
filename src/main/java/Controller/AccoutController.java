@@ -4,6 +4,8 @@ import io.javalin.http.Context;
 
 import io.javalin.http.HttpStatus;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import Model.Account;
@@ -50,5 +52,29 @@ public class AccoutController {
         account = this.accountService.getAccountByUserName(account.username);
         context.status(status).result(GeneralUtil.convertAccountObjToJson(account));
     }
-    
+ 
+
+    /**
+     * Handle authentication from javlin context
+     * 
+     * @param context Javlin context containing account information
+     * @throws JsonProcessingException will be thrown if there is issue with the request body
+     */
+    public void login(Context context) throws JsonProcessingException{
+        Account account = GeneralUtil.extractAccountFromBody(context.body());
+        
+        if(account == null){
+            context.status(HttpStatus.BAD_REQUEST);
+            return;
+        }
+
+        Optional<Account> extractedAccount = this.accountService.findAccountByUserNameAndPassword(account);
+
+        if(extractedAccount.isEmpty()){
+            context.status(401);
+            return;
+        }
+
+        context.status(200).result(GeneralUtil.convertAccountObjToJson(extractedAccount.get()));
+    }
 }

@@ -29,7 +29,6 @@ public class AccountService {
         return account.isPresent() ? account.get() : null;
     }
 
-
     /**
      * Save new account to database
      * 
@@ -55,5 +54,15 @@ public class AccountService {
         this.accountDAO.save(account);
         return HttpStatus.OK;
     }
+
     
+    /**
+     * Find account with the provided username and password information
+     * 
+     * @param account, account information with username and password
+     * @return Optional of account or empty depending on wether the account exist or not
+     */
+    public Optional<Account> findAccountByUserNameAndPassword(Account account){
+        return this.accountDAO.findAccountByUserNameAndPassword(account);
+    }
 }
