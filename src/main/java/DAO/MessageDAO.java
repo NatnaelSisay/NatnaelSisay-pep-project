@@ -34,7 +34,6 @@ public class MessageDAO {
         return Optional.empty();
     }
 
-
     public Optional<Message> findById(int message_id){
         Connection connection = ConnectionUtil.getConnection();
 
@@ -85,7 +84,6 @@ public class MessageDAO {
 
         return Optional.of(new ArrayList<>());
     }
-
 
     public Optional<List<Message>> template(int user_id){
         Connection connection = ConnectionUtil.getConnection();
@@ -158,7 +156,6 @@ public class MessageDAO {
         return 0; // no row affected
     }
 
-
     private Optional<List<Message>> extractMessagesFromResultSet(ResultSet rs) throws SQLException{
 
         List<Message> messages = new ArrayList<>();
@@ -175,4 +172,27 @@ public class MessageDAO {
 
         return Optional.of(messages);
     }
+
+
+    public int update(int message_id, Message message){
+        Connection connection = ConnectionUtil.getConnection();
+
+        try{
+            String query = "UPDATE message SET message_text=? WHERE message_id=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, message.message_text);
+            preparedStatement.setInt(2, message_id);
+
+            int rowUpdated = preparedStatement.executeUpdate();
+
+            return rowUpdated;
+
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return 0;
+    }
+
+
 }

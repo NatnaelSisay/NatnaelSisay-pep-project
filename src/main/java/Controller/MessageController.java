@@ -83,4 +83,22 @@ public class MessageController {
 
         ctx.status(200);
     }
+
+    public void updateMessage(Context ctx) throws JsonProcessingException{
+        int message_id = Integer.valueOf(ctx.pathParam("message_id"));
+        Optional<Message> message = this.messageService.findById(message_id);
+
+        if(message.isEmpty()){
+            ctx.status(400);
+            return;
+        }
+
+        Optional<Message> updatedMessage = this.messageService.updateMessage(message_id, ctx.body());
+        if(updatedMessage.isEmpty()) {
+            ctx.status(400);
+            return;
+        }
+
+        ctx.status(200).result( GeneralUtil.convertToJson(updatedMessage.get()) );
+    }
 }

@@ -37,6 +37,8 @@ public class SocialMediaController {
         //
         app.get("/messages", messageController::findAll);
         app.get("/messages/{message_id}", messageController::findById);
+        app.patch("/messages/{message_id}", messageController::updateMessage);
+        app.put("/messages/{message_id}", messageController::updateMessage);
         app.post("/messages", messageController::save);
         app.delete("/messages/{id}", messageController::delete);
         

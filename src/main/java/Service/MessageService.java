@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import DAO.MessageDAO;
 import Model.Account;
 import Model.Message;
 import Util.GeneralUtil;
+import Util.ValidationUtil;
 
 public class MessageService {
     MessageDAO messageDAO;
@@ -58,5 +61,18 @@ public class MessageService {
 
     public Optional<Message> findById(int message_id){
         return this.messageDAO.findById(message_id);
+    }
+
+    public Optional<Message> updateMessage(int message_id, String messageBody) throws JsonProcessingException{
+        Message message = GeneralUtil.extractMessageFromBody(messageBody);
+
+        if(!ValidationUtil.isValidMessage(message)){
+            return Optional.empty();
+        }
+
+        int rowsUpdated = this.messageDAO.update(message_id, message);
+        if(rowsUpdated == 0) return Optional.empty();
+
+        return findById(message_id);
     }
 }
